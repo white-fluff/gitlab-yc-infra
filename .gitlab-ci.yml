@@ -56,7 +56,6 @@ plan:
     paths:
       - planfile
 
-
 apply:
   stage: apply
   script:
@@ -64,7 +63,6 @@ apply:
   dependencies:
     - plan
   when: manual
-
 
 destroy:
   stage: destroy
