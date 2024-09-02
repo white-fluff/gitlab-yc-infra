@@ -1,2 +1,4 @@
-.gitlab-ci.yaml
 .git/
+.terraform/
+modules/
+sa-key.json
