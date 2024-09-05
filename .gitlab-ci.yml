@@ -34,6 +34,7 @@ before_script:
       }
     }
     EOF
+  - cat ~/.terraformrc
   - terraform init
   - echo $YC_KEY
   - echo $YC_KEY > /tmp/sa-key.json

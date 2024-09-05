@@ -33,7 +33,6 @@ provider "yandex" {
 }
 
 # Just Test Pipeline
-
 resource "yandex_iam_service_account" "sa-test" {
   name        = "test-sa"
   description = "Testing creation of a resource by terraform pipeline via gitlab"
