@@ -36,7 +36,8 @@ before_script:
       }
     }
     EOF
-  - terraform init -backend-config="access_key=$YC_STORAGE_ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
+  - terraform init
+  # - terraform init -backend-config="access_key=$YC_STORAGE_ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
   - echo $YC_KEY > /tmp/sa-key.json
 
 stages:
