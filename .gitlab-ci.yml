@@ -7,8 +7,7 @@ workflow:
       - when: always
 
 image:
-  name: hashicorp/terraform:1.9.5
-  # name: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+  name: registry.gitlab.com/gitlab-org/gitlab-build-images:terraform
 
 cache:
   paths:
@@ -16,7 +15,7 @@ cache:
 
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}/terraform
-  # TF_VERSION: 1.9.5
+  TF_VERSION: 1.9.5
   YC_SA_KEY_FILE: /tmp/sa-key.json
 
 before_script:
