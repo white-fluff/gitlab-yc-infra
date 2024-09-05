@@ -68,16 +68,16 @@ apply:
     - plan
   when: manual
 
-# destroy:
-#   stage: destroy
-#   script:
-#     - terraform destroy  -auto-approve
-#   dependencies:
-#     - plan
-#     - apply
-#   cache:
-#     key: ${CI_COMMIT_REF_NAME}
-#     paths:
-#     - ${TF_DIR}/.terraform
-#     policy: pull
-#   when: manual
+destroy:
+  stage: destroy
+  script:
+    - terraform destroy  -auto-approve
+  dependencies:
+    - plan
+    - apply
+  cache:
+    key: ${CI_COMMIT_REF_NAME}
+    paths:
+    - ${TF_DIR}/.terraform
+    policy: pull
+  when: manual
