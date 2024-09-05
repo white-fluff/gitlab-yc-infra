@@ -21,13 +21,12 @@ terraform {
     skip_requesting_account_id  = true
     skip_s3_checksum            = true
 
-    # dynamodb_endpoint = "https://docapi.serverless.yandexcloud.net/ru-central1/b1g02u7oe05n4bt41qpi/etnh0gd932lqlgnqci28"
-    # dynamodb_table = "tf_lock"
+    dynamodb_endpoint = "https://docapi.serverless.yandexcloud.net/ru-central1/b1g02u7oe05n4bt41qpi/etnh0gd932lqlgnqci28"
+    dynamodb_table = "tf_lock"
   }
 }
 
 provider "yandex" {
-  token     = var.iam_token
   cloud_id  = var.cloud_id
   folder_id = var.folder_id
   zone      = var.zone

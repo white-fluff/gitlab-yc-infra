@@ -7,7 +7,6 @@ workflow:
       - when: always
 
 image:
-  # name: registry.gitlab.com/gitlab-org/gitlab-build-images:terraform
   name: hashicorp/terraform:1.9.5
   entrypoint:
     - '/usr/bin/env'
@@ -23,7 +22,6 @@ variables:
 
 before_script:
   - cd $TF_ROOT
-  - terraform version
   - |
     cat <<EOF >> ~/.terraformrc
     provider_installation {
@@ -37,7 +35,7 @@ before_script:
     }
     EOF
   - terraform init
-  # - terraform init -backend-config="access_key=$YC_STORAGE_ACCESS_KEY" -backend-config="secret_key=$SECRET_KEY"
+  - echo $YC_KEY
   - echo $YC_KEY > /tmp/sa-key.json
 
 stages:
