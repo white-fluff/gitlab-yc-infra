@@ -52,6 +52,7 @@ plan:
   stage: plan
   script:
     - terraform plan -out="planfile"
+    - pwd && ls -a1
   dependencies:
     - validate
   artifacts:
@@ -70,7 +71,6 @@ apply:
 destroy:
   stage: destroy
   script:
-    - pwd && ls -a1
     - terraform destroy  -auto-approve
   dependencies:
     - plan
