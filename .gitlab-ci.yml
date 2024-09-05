@@ -20,6 +20,7 @@ variables:
 
 before_script:
   - cd $TF_ROOT
+  - terraform version
   - |
     cat <<EOF >> ~/.terraformrc
     provider_installation {
@@ -32,6 +33,7 @@ before_script:
       }
     }
     EOF
+  - cat ~/.terraformrc
   - terraform init
   - echo $YC_SA_KEY > /tmp/sa-key.json
 
