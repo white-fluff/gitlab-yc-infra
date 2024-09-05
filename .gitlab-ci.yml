@@ -37,7 +37,7 @@ before_script:
     }
     EOF
   - cat ~/.terraformrc
-  - terraform init
+  - terraform init -backend-config="access_key=$AWS_ACCESS_KEY_ID" -backend-config="secret_key=$AWS_SECRET_ACCESS_KEY"
   - echo $YC_SA_KEY > /tmp/sa-key.json
 
 stages:
