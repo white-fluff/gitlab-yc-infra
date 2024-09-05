@@ -34,9 +34,7 @@ before_script:
       }
     }
     EOF
-  - cat ~/.terraformrc
   - terraform init
-  - echo $YC_KEY
   - echo $YC_KEY > /tmp/sa-key.json
 
 stages:
@@ -63,7 +61,8 @@ plan:
 apply:
   stage: apply
   script:
-    - terraform apply  -auto-approve "planfile"
+    - terraform apply -auto-approve "planfile"
+    - pwd && ls -a1
   dependencies:
     - plan
   when: manual
@@ -71,6 +70,7 @@ apply:
 destroy:
   stage: destroy
   script:
+    - pwd && ls -a1
     - terraform destroy  -auto-approve
   dependencies:
     - plan
