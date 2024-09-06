@@ -57,7 +57,7 @@ plan:
     - validate
   artifacts:
     paths:
-      - tfplan
+      - $TF_ROOT/tfplan
 
 apply:
   stage: apply
