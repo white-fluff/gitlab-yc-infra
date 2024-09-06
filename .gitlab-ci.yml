@@ -51,7 +51,7 @@ validate:
 plan:
   stage: plan
   script:
-    - terraform plan -out="planfile"
+    - terraform plan -out=tfplan -input=false
     - pwd && ls -a1
   dependencies:
     - validate
@@ -62,8 +62,8 @@ plan:
 apply:
   stage: apply
   script:
-    - terraform apply -auto-approve "planfile"
     - pwd && ls -a1
+    - terraform apply -input=false tfplan
   dependencies:
     - plan
   when: manual
