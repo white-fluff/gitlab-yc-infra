@@ -1,0 +1,83 @@
+---
+workflow:
+    rules:
+      # - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TITLE == 'start tf pipe'
+        when: never
+      - when: always
+
+image:
+  name: hashicorp/terraform:1.9.5
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+cache:
+  paths:
+    - .terraform
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}/terraform
+  YC_SERVICE_ACCOUNT_KEY_FILE: /tmp/sa-key.json
+
+before_script:
+  - cd $TF_ROOT
+  - |
+    cat <<EOF >> ~/.terraformrc
+    provider_installation {
+      network_mirror {
+        url = "https://terraform-mirror.yandexcloud.net/"
+        include = ["registry.terraform.io/*/*"]
+      }
+      direct {
+        exclude = ["registry.terraform.io/*/*"]
+      }
+    }
+    EOF
+  - terraform init
+  - echo $YC_KEY > /tmp/sa-key.json
+
+stages:
+  - validate
+  - plan
+  - apply
+  - destroy
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+
+plan:
+  stage: plan
+  script:
+    - terraform plan -out=tfplan -input=false
+    - pwd && ls -a1
+  dependencies:
+    - validate
+  artifacts:
+    paths:
+      - $TF_ROOT/tfplan
+
+apply:
+  stage: apply
+  script:
+    - pwd && ls -a1
+    - terraform apply -input=false tfplan
+  dependencies:
+    - plan
+  when: manual
+
+destroy:
+  stage: destroy
+  script:
+    - terraform destroy  -auto-approve
+  dependencies:
+    - plan
+    - apply
+  cache:
+    key: ${CI_COMMIT_REF_NAME}
+    paths:
+    - ${TF_DIR}/.terraform
+    policy: pull
+  when: manual
