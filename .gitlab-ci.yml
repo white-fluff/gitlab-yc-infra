@@ -36,6 +36,7 @@ before_script:
   - echo $YC_KEY > /tmp/sa-key.json
   - echo $SSH_NODE_KEY > /tmp/ssh_node_key.pub
   - pwd
+  - cat /tmp/ssh_node_key.pub
 
 stages:
   - validate

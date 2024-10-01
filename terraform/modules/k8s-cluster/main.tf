@@ -207,6 +207,9 @@ resource "yandex_kubernetes_node_group" "node_group_worker" {
   name        = "worker"
   version     = local.k8s_version
   instance_template {
+    metadata = {
+      ssh-keys = "k8s-adm:${file("/tmp/ssh_node_key.pub")}"
+    }
     platform_id = "standard-v1"
     name        = "worker-{instance.short_id}"
     network_interface {
@@ -216,9 +219,6 @@ resource "yandex_kubernetes_node_group" "node_group_worker" {
         yandex_vpc_security_group.k8s-main-sg.id,
         yandex_vpc_security_group.k8s-public-services.id 
       ]
-    metadata = {
-      ssh-keys = "k8s-adm:${file("/tmp/ssh_node_key.pub")}"
-    }
     } 
     resources {
       memory = 4
