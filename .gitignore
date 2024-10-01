@@ -1,5 +1,3 @@
 .git/
 .terraform/
-modules/
 sa-key.json
-env_vars.sh
