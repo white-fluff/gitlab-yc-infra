@@ -1,6 +1,6 @@
 workflow:
     rules:
-      - if: $CI_COMMIT_BRANCH != "main" && $CI_COMMIT_TITLE == 'start tf pipe'
+      - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TITLE == 'start tf pipe'
         when: always
       - when: never
 
