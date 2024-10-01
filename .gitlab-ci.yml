@@ -1,10 +1,8 @@
----
 workflow:
     rules:
-      # - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
-      - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TITLE == 'start tf pipe'
-        when: never
-      - when: always
+      - if: $CI_COMMIT_BRANCH != "main" && $CI_COMMIT_TITLE == 'start tf pipe'
+        when: always
+      - when: never
 
 image:
   name: hashicorp/terraform:1.9.5
@@ -36,6 +34,8 @@ before_script:
     EOF
   - terraform init
   - echo $YC_KEY > /tmp/sa-key.json
+  - echo $SSH_NODE_KEY > /tmp/ssh_node_key.pub
+  - pwd
 
 stages:
   - validate
@@ -52,7 +52,6 @@ plan:
   stage: plan
   script:
     - terraform plan -out=tfplan -input=false
-    - pwd && ls -a1
   dependencies:
     - validate
   artifacts:
@@ -62,7 +61,6 @@ plan:
 apply:
   stage: apply
   script:
-    - pwd && ls -a1
     - terraform apply -input=false tfplan
   dependencies:
     - plan

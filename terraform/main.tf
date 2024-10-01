@@ -32,11 +32,11 @@ provider "yandex" {
   zone      = var.zone
 }
 
-# Just Test Pipeline
-resource "yandex_iam_service_account" "sa-test" {
-  name        = "test-sa"
-  description = "Testing creation of a resource by terraform pipeline via gitlab"
-  folder_id   = var.folder_id
+# Add k8s module
+module "k8s-cluster" {
+  source         = "./modules/k8s-cluster"
+  default_zone   = var.zone
+  folder_id      = var.folder_id
 }
 
 # module "compute-instance" {
