@@ -1,12 +1,15 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -14,7 +17,10 @@ import (
 )
 
 var clusterID string = os.Getenv("K8S_CLUSTER_ID")
+var k8sYcEndpoint string = "https://mks.api.cloud.yandex.net/managed-kubernetes/v1/clusters/"
+var ycJwt string = os.Getenv("YC_SA_JST")
 var allowedUsers []int64
+var ycIamToken string = getIAMToken()
 
 func init() {
 	envAllowedUser := os.Getenv("ALLOWED_USER_ID")
@@ -39,38 +45,72 @@ func isAllowedUser(userID int64) bool {
 	return false
 }
 
-func start_k8s_cluster() string {
-	var reqURL string = "https://mks.api.cloud.yandex.net/managed-kubernetes/v1/clusters/" + (clusterID) + ":start"
-	resp, err := http.NewRequest("POST", reqURL, nil)
-	log.Println("Start K8s Cluster. ID: " + (reqURL) + "\n")
+func getIAMToken() string {
+	// jot := signedToken()
+	// fmt.Println(jot)
+	resp, err := http.Post(
+		"https://iam.api.cloud.yandex.net/iam/v1/tokens",
+		"application/json",
+		strings.NewReader(fmt.Sprintf(`{"jwt":"%s"}`, ycJwt)),
+	)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		panic(fmt.Sprintf("%s: %s", resp.Status, body))
+	}
+	var data struct {
+		IAMToken string `json:"iamToken"`
+	}
+	err = json.NewDecoder(resp.Body).Decode(&data)
+	if err != nil {
+		panic(err)
+	}
+	return data.IAMToken
+}
+
+func start_k8s_cluster() string {
+	var reqURL string = (k8sYcEndpoint) + (clusterID) + ":start"
+	req, err := http.NewRequest("POST", reqURL, nil)
+	if err != nil {
+		log.Fatal("Error while creating Request: ", err)
+	}
+
+	req.Header.Add("Authorization", "Bearer "+ycIamToken)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Error while sending request:", err)
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Println("Response Status", resp.Status)
 
-	return string(body)
+	return "Start k8s-cluster: " + (clusterID) + "\n"
 }
 
 func stop_k8s_cluster() string {
-	var reqURL string = "https://mks.api.cloud.yandex.net/managed-kubernetes/v1/clusters/" + (clusterID) + ":start"
-	resp, err := http.NewRequest("POST", reqURL, nil)
-	log.Println("Stop K8s Cluster. ID: " + (reqURL) + "\n")
+	var reqURL string = (k8sYcEndpoint) + (clusterID) + ":stop"
+	req, err := http.NewRequest("POST", reqURL, nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error while creating Request: ", err)
+	}
+
+	req.Header.Add("Authorization", "Bearer "+ycIamToken)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal("Error while sending request:", err)
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Println("Response Status", resp.Status)
 
-	return string(body)
+	return "Stop k8s-cluster: " + (clusterID) + "\n"
 }
 
 func main() {
@@ -109,18 +149,26 @@ func main() {
 	})
 
 	bot.Handle("/start_k8s_cluster", func(c tele.Context) error {
+		user := c.Sender()
+		userID := user.ID
 
-		result := start_k8s_cluster()
-		message := "```\n" + (result) + "\n```"
+		if !isAllowedUser(userID) {
+			return c.Send("Sorry, you don't have access to this bot.")
+		}
 
+		message := start_k8s_cluster()
 		return c.Send(message)
 	})
 
 	bot.Handle("/stop_k8s_cluster", func(c tele.Context) error {
+		user := c.Sender()
+		userID := user.ID
 
-		result := stop_k8s_cluster()
-		message := "```\n" + (result) + "\n```"
+		if !isAllowedUser(userID) {
+			return c.Send("Sorry, you don't have access to this bot.")
+		}
 
+		message := stop_k8s_cluster()
 		return c.Send(message)
 	})
 
