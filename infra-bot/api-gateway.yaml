@@ -1,0 +1,40 @@
+openapi: 3.0.0
+info:
+  title: GW for Maintainer bot
+  version: 1.0.0
+paths:
+  /:
+    post:
+      summary: Webhook for Telegram Bot
+      operationId: telegramWebhook
+      requestBody:
+        description: Incoming webhook data from Telegram
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bot started
+      x-yc-apigateway-integration:
+        type: cloud_functions
+        function_id: d4el4fa16ttlh63iushv
+        service_account_id: ajep46t4klgt18jvgpmb
+        retries: 3
+        timeout: 10s
+# paths:
+#   /telegram-bot-functions-main:
+#     post:
+#       x-yc-apigateway-integration:
+#         type: cloud-function
+#         function_id: d4el4fa16ttlh63iushv
+#       operationId: telegram-bot-functions-main
