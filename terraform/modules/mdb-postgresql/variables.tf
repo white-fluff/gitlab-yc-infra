@@ -28,7 +28,7 @@ variable "security_group_ids" {
   default     = "enp2l5k12mafr81j7754"
 }
 
-variable "pg_user_konst_password" {
-    description = "My PG password"
-    type        = string
-}
+# variable "pg_user_konst_password" {
+#     description = "My PG password"
+#     type        = string
+# }
