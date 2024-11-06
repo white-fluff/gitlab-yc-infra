@@ -17,7 +17,7 @@ resource "yandex_mdb_postgresql_cluster" "postgresql-cluster" {
   name        = "postgresql-cluster"
   environment = "PRODUCTION"
   network_id  = var.network_id
-  security_group_ids = var.security_group_ids
+  security_group_ids = [var.security_group_ids]
 
   config {
     version = local.pg_version
@@ -34,22 +34,23 @@ resource "yandex_mdb_postgresql_cluster" "postgresql-cluster" {
       default_transaction_isolation  = "TRANSACTION_ISOLATION_READ_COMMITTED"
       shared_preload_libraries       = "SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN,SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN"
     }
+
+    access = {
+      data_lens = true
+      web_sql = true
+      serverless = true
+      }
+    
+    performance_diagnostics = {
+      enabled = true
+      }
+
   }
 
   maintenance_window {
     type = "WEEKLY"
     day  = "SAT"
     hour = 12
-  }
-  
-  access = {
-    data_lens = true
-    web_sql = true
-    serverless = true
-  }
-  
-  performance_diagnostics = {
-    enabled = true
   }
 
   host {
