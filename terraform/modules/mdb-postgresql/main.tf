@@ -1,7 +1,7 @@
 locals {
-    pg_version = "15",
-    host_type = "s3-c2-m8",
-    dick_type = "network-ssd",
+    pg_version = "15"
+    host_type = "s3-c2-m8"
+    dick_type = "network-ssd"
     disk_size = 10
 }
 
