@@ -1,4 +1,7 @@
-# Change logc
-change:
-  - date: "Tue Oct  1 16:58:32 MSK 2024"
+# Change log
+change1:
+   - date: "Tue Oct  1 16:58:32 MSK 2024"
+   - commit_message: "start tf pipe"
+change2:
+  - date: "Wed Nov  6 13:50:22 MSK 2024"
   - commit_message: "start tf pipe"
