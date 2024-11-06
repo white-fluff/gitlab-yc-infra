@@ -16,7 +16,7 @@ resource "yandex_compute_disk" "boot-disk" {
   type     = var.boot_disk_type
   zone     = var.default_zone
   size     = var.boot_disk_type
-  image_id = "<идентификатор_образа>"
+  image_id = "fd83h72fb5urnmt6vkfd"
 }
 
 resource "yandex_compute_instance" "selfhosted-apps" {
