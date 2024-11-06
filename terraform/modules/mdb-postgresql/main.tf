@@ -20,6 +20,11 @@ resource "yandex_mdb_postgresql_cluster" "postgresql-cluster" {
   security_group_ids = [var.security_group_ids]
 
   config {
+    access {
+      data_lens = true
+      web_sql = true
+      serverless = true
+    }
     version = local.pg_version
     resources {
       resource_preset_id = local.host_type
@@ -34,16 +39,6 @@ resource "yandex_mdb_postgresql_cluster" "postgresql-cluster" {
       default_transaction_isolation  = "TRANSACTION_ISOLATION_READ_COMMITTED"
       shared_preload_libraries       = "SHARED_PRELOAD_LIBRARIES_AUTO_EXPLAIN,SHARED_PRELOAD_LIBRARIES_PG_HINT_PLAN"
     }
-
-    access = {
-      data_lens = true
-      web_sql = true
-      serverless = true
-      }
-    
-    performance_diagnostics = {
-      enabled = true
-      }
 
   }
 
