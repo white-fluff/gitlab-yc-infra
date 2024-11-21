@@ -39,14 +39,14 @@ module "k8s-cluster" {
   folder_id      = var.folder_id
 }
 
-# module "basic-vm" {
-#   source         = "./modules/compute-instance"
-#   default_zone   = var.zone
-#   folder_id      = var.folder_id
-# }
-
 module "mdb-postgresql" {
   source         = "./modules/mdb-postgresql"
+  default_zone   = var.zone
+  folder_id      = var.folder_id
+}
+
+module "wireguard-vm" {
+  source         = "./modules/wg-vpn-vm"
   default_zone   = var.zone
   folder_id      = var.folder_id
 }

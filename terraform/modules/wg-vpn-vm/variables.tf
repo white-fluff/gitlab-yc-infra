@@ -13,7 +13,7 @@ variable "folder_id" {
 variable "subnet_id" {
   description = "Subnet ID"
   type        = string
-  default     = ""
+  default     = "e2lpgdg7bkt1jcevim8d"
 }
 
 # ==== Boot Disk vars ==== #
