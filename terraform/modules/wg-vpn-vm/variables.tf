@@ -10,10 +10,23 @@ variable "folder_id" {
   default     = ""
 }
 
+# ==== Network Interface vars ==== #
 variable "subnet_id" {
   description = "Subnet ID"
   type        = string
   default     = "e2lpgdg7bkt1jcevim8d"
+}
+
+variable "static_ip_address" {
+  description = "Static IP-address ID"
+  type        = string
+  default     = ["enpp72203p4k5vat9hvn"]
+}
+
+variable "security_group_ids" {
+  description = "Static IP-address ID"
+  type        = string
+  default     = "e2lksodlkglh0kosrdi0"
 }
 
 # ==== Boot Disk vars ==== #
@@ -26,7 +39,7 @@ variable "boot_disk_type" {
 variable "boot_disk_size" {
   description = "Boot disk size"
   type        = number
-  default     = 10
+  default     = 10`
 }
 
 variable "boot_disk_image_id" {

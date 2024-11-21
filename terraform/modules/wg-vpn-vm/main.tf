@@ -30,8 +30,10 @@ resource "yandex_compute_instance" "wireguard" {
   }
 
   network_interface {
-    subnet_id = var.subnet_id
-    nat       = true
+    subnet_id          = var.subnet_id
+    nat                = true
+    nat_ip_address     = var.static_ip_address
+    security_group_ids = var.security_group_ids
   }
 
   metadata = {
