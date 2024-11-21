@@ -39,7 +39,7 @@ variable "boot_disk_type" {
 variable "boot_disk_size" {
   description = "Boot disk size"
   type        = number
-  default     = 10`
+  default     = 10
 }
 
 variable "boot_disk_image_id" {
