@@ -17,13 +17,13 @@ variable "subnet_id" {
   default     = "e2lpgdg7bkt1jcevim8d"
 }
 
-variable "static_ip_address" {
-  description = "Static IP-address ID"
+variable "security_group_ids" {
+  description = "Security group ids"
   type        = string
   default     = ["enpp72203p4k5vat9hvn"]
 }
 
-variable "security_group_ids" {
+variable "static_ip_address" {
   description = "Static IP-address ID"
   type        = string
   default     = "e2lksodlkglh0kosrdi0"
