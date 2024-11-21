@@ -6,5 +6,5 @@ change2:
   - date: "Wed Nov  6 16:39:29 MSK 2024"
   - commit_message: "start tf pipe"
 change3:
-  - date: "Thu Nov 21 11:11:34 MSK 2024"
+  - date: "Thu Nov 21 11:15:18 MSK 2024"
   - message: "add wg-vm module and deploy"
