@@ -19,7 +19,7 @@ variable "subnet_id" {
 
 variable "security_group_ids" {
   description = "Security group ids"
-  type        = string
+  type        = set(string)
   default     = ["enpp72203p4k5vat9hvn"]
 }
 
