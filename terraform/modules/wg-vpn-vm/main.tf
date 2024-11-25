@@ -14,7 +14,7 @@ resource "yandex_compute_disk" "boot-disk" {
   image_id = var.boot_disk_image_id
 }
 
-resource "yandex_compute_instance" "wireguard" {
+resource "yandex_compute_instance" "wireguard-vm" {
   name                      = "wireguard-vm"
   allow_stopping_for_update = true
   platform_id               = "standard-v3"
@@ -31,7 +31,7 @@ resource "yandex_compute_instance" "wireguard" {
 
   network_interface {
     subnet_id          = var.subnet_id
-    nat                = true
+    # nat                = true
     nat_ip_address     = var.static_ip_address
     security_group_ids = var.security_group_ids
   }
