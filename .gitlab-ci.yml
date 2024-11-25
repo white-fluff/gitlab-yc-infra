@@ -70,7 +70,7 @@ apply:
 destroy:
   stage: destroy
   script:
-    - terraform destroy  -auto-approve
+    - terraform destroy  -auto-approve -target=module.wireguard-vm
   dependencies:
     - plan
     - apply
